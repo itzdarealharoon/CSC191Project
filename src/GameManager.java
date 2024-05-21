@@ -1,3 +1,5 @@
+// update
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,7 +20,7 @@ public class GameManager extends JPanel implements ActionListener {
     private Timer timer;
     private int score;
     private Random random;
-
+    
     public GameManager() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.WHITE);

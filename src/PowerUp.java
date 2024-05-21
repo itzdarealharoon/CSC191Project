@@ -1,3 +1,5 @@
+// update
+
 public class PowerUp {
     private boolean hasSlowMotion;
     private boolean hasScoreBooster;

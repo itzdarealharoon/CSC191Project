@@ -1,3 +1,5 @@
+// update
+
 public class ScoreManager {
     private int score;
 
