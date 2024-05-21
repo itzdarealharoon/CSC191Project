@@ -1,4 +1,4 @@
-// update
+// updat
 
 public class PowerUp {
     private boolean hasSlowMotion;
