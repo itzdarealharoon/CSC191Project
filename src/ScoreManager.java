@@ -1,5 +1,3 @@
-// updat
-
 public class ScoreManager {
     private int score;
 
@@ -14,6 +12,4 @@ public class ScoreManager {
     public int getScore() {
         return score;
     }
-
-    // Other methods as needed
 }

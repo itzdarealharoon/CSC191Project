@@ -1,55 +1,63 @@
-// updat
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JPanel;
 
 public class Dinosaur extends JPanel {
+    private int xPos;
     private int yPos;
     private boolean isJumping;
     private int jumpSpeed;
     private int gravity;
+    public static final int WIDTH = 50;
+    public static final int HEIGHT = 50;
 
-    public Dinosaur() {
-        yPos = 250; // Lower the initial position
-        isJumping = false;
-        jumpSpeed = -15; // Initial jump speed
-        gravity = 1; // Gravity effect
+    public Dinosaur(int x, int y) {
+        this.xPos = x;
+        this.yPos = y;
+        this.isJumping = false;
+        this.jumpSpeed = -15;
+        this.gravity = 1;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.BLACK);
-        g.fillRect(100, yPos, 50, 50); // Adjust the size and position of the dinosaur rectangle
+        g.fillRect(xPos, yPos, WIDTH, HEIGHT);
     }
 
     public void jump() {
         if (!isJumping) {
             isJumping = true;
-            jumpSpeed = -15; // Set jump speed
+            jumpSpeed = -15;
         }
     }
 
     public void move() {
-        // Apply gravity
         if (isJumping) {
             yPos += jumpSpeed;
             jumpSpeed += gravity;
-            // Check if dinosaur has reached the ground
-            if (yPos >= 250) { // Adjust the ground level
-                yPos = 250; // Reset position
-                isJumping = false; // End jump
+            if (yPos >= 350 - HEIGHT) { // Adjusted based on panel height and dinosaur height
+                yPos = 350 - HEIGHT;
+                isJumping = false;
             }
         }
-        repaint(); // Refresh JPanel
+        repaint();
     }
 
     public boolean isColliding(Obstacle obstacle) {
-        Rectangle dinosaurRect = new Rectangle(100, yPos, 50, 60); // Dinosaur rectangle
-        Rectangle obstacleRect = new Rectangle(obstacle.getX(), obstacle.getY(), obstacle.getWidth(), obstacle.getHeight()); // Obstacle rectangle
+        Rectangle dinosaurRect = new Rectangle(xPos, yPos, WIDTH, HEIGHT);
+        Rectangle obstacleRect = new Rectangle(obstacle.getX(), obstacle.getY(), obstacle.getWidth(), obstacle.getHeight());
         return dinosaurRect.intersects(obstacleRect);
+    }
+
+    // Method to handle space bar press event
+    public void handleSpaceBarPress(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            jump();
+        }
     }
 }

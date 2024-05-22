@@ -1,5 +1,3 @@
-// updat
-
 public class PowerUp {
     private boolean hasSlowMotion;
     private boolean hasScoreBooster;
@@ -24,6 +22,4 @@ public class PowerUp {
     public void activateScoreBooster() {
         hasScoreBooster = true;
     }
-
-    // Other methods as needed
 }
