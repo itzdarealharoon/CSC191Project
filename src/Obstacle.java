@@ -1,27 +1,35 @@
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class Obstacle {
-    private int x;
-    private int y;
-    private int width;
-    private int height;
-    private int speed;
+    private int x, y, width, height, speed;
+    private String type;
 
-    public Obstacle(int x, int y, int width, int height, int speed) {
+    public Obstacle(int x, int y, int width, int height, int speed, String type) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.speed = speed;
+        this.type = type;
     }
 
     public void move() {
-        x -= speed; // Move the obstacle towards the left
+        x -= speed;
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect(x, y - height, width, height); // Adjust the position of the obstacle
+        if ("bird".equals(type)) {
+            g.setColor(Color.RED); // Bird color
+        } else {
+            g.setColor(Color.BLUE); // Regular obstacle color
+        }
+        g.fillRect(x, y, width, height);
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
     }
 
     public int getX() {
@@ -38,5 +46,9 @@ public class Obstacle {
 
     public int getHeight() {
         return height;
+    }
+
+    public String getType() {
+        return type;
     }
 }

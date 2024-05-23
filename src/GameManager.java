@@ -22,11 +22,13 @@ public class GameManager extends JPanel implements ActionListener {
     private boolean spacePressed;
 
     public GameManager() {
-    	
-    	setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.WHITE);
         int dinosaurBottomY = HEIGHT - Dinosaur.HEIGHT; // Calculate y-position so bottom aligns with bottom of panel
-        dinosaur = new Dinosaur(100, 300); // Initial x-position is 100
+        int dinosaurStartX = 100; // Adjust the starting x-position here
+        int dinosaurStartY = 300; // Adjust the starting y-position here
+
+        dinosaur = new Dinosaur(dinosaurStartX, dinosaurStartY); // Initial position
         obstacleManager = new ObstacleManager();
         timer = new Timer(20, this);
         timer.start();
@@ -70,12 +72,20 @@ public class GameManager extends JPanel implements ActionListener {
     }
 
     private void generateObstacle() {
-        int obstacleY = 350; // Adjusted y-coordinate
+        int obstacleBottomY = HEIGHT - 50; // Fixed y-coordinate for the bottom of the obstacle
 
-        // Generate obstacles with random spacing
+        // Generate obstacles with random spacing and size
         if (obstacleManager.getObstacles().isEmpty() || obstacleManager.getObstacles().get(obstacleManager.getObstacles().size() - 1).getX() < WIDTH - OBSTACLE_GAP) {
             int randomX = WIDTH + random.nextInt(200); // Randomize the x-coordinate of the obstacle
-            obstacleManager.addObstacle(new Obstacle(randomX, obstacleY, OBSTACLE_WIDTH, OBSTACLE_HEIGHT + 50, OBSTACLE_SPEED)); // Increase height of the obstacle
+            int obstacleHeight = 30 + random.nextInt(30); // Randomize the height of the obstacle
+            int topPosition = obstacleBottomY - obstacleHeight; // Calculate the top position of the obstacle
+            String type = random.nextInt(5) == 0 ? "bird" : "obstacle"; // 1 in 5 chance to create a bird
+
+            if ("bird".equals(type)) {
+                topPosition = HEIGHT - 200 - random.nextInt(50); // Randomize bird's height in the air
+            }
+
+            obstacleManager.addObstacle(new Obstacle(randomX, topPosition, OBSTACLE_WIDTH, obstacleHeight, OBSTACLE_SPEED, type));
         }
     }
 

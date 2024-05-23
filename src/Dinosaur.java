@@ -27,6 +27,10 @@ public class Dinosaur extends JPanel {
         super.paintComponent(g);
         g.setColor(Color.BLACK);
         g.fillRect(xPos, yPos, WIDTH, HEIGHT);
+
+        // Draw hitbox (blue border) slightly above the dinosaur
+        g.setColor(Color.BLUE);
+        g.drawRect(xPos, yPos - 5, WIDTH, HEIGHT + 5);
     }
 
     public void jump() {
@@ -49,8 +53,8 @@ public class Dinosaur extends JPanel {
     }
 
     public boolean isColliding(Obstacle obstacle) {
-        Rectangle dinosaurRect = new Rectangle(xPos, yPos, WIDTH, HEIGHT);
-        Rectangle obstacleRect = new Rectangle(obstacle.getX(), obstacle.getY(), obstacle.getWidth(), obstacle.getHeight());
+        Rectangle dinosaurRect = new Rectangle(xPos, yPos, WIDTH, HEIGHT); // Dinosaur rectangle
+        Rectangle obstacleRect = new Rectangle(obstacle.getX(), obstacle.getY(), obstacle.getWidth(), obstacle.getHeight()); // Obstacle rectangle
         return dinosaurRect.intersects(obstacleRect);
     }
 

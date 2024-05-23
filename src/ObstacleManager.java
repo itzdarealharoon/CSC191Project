@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class ObstacleManager {
@@ -13,24 +12,14 @@ public class ObstacleManager {
         obstacles.add(obstacle);
     }
 
-    public void removeObstacle(Obstacle obstacle) {
-        obstacles.remove(obstacle);
-    }
-
     public List<Obstacle> getObstacles() {
         return obstacles;
     }
 
     public void update() {
-        // Move each obstacle
-        Iterator<Obstacle> iterator = obstacles.iterator();
-        while (iterator.hasNext()) {
-            Obstacle obstacle = iterator.next();
+        for (Obstacle obstacle : obstacles) {
             obstacle.move();
-            // Remove obstacle if it's off the screen
-            if (obstacle.getX() + obstacle.getWidth() < 0) {
-                iterator.remove();
-            }
         }
+        obstacles.removeIf(obstacle -> obstacle.getX() < 0);
     }
 }
