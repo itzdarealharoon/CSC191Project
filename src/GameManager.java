@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameManager extends JPanel implements ActionListener {
     private static final int WIDTH = 800;
@@ -12,14 +14,18 @@ public class GameManager extends JPanel implements ActionListener {
     private static final int OBSTACLE_WIDTH = 30;
     private static final int OBSTACLE_HEIGHT = 30;
     private static final int OBSTACLE_SPEED = 5;
+    private static final int BIRD_SPEED = 8;
     private static final int OBSTACLE_GAP = 200;
+    private static final double POWER_UP_RATIO = 1.0 / 1000.0;
+    private static int POWER_UP_DURATION = 10;
+
     private Dinosaur dinosaur;
     private ObstacleManager obstacleManager;
-    private Timer timer;
+    Timer timer;
     private ScoreManager scoreManager;
     private PowerUp powerUp;
     private Random random;
-    private boolean spacePressed;
+    private double scoreMultiplier;
 
     public GameManager() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -30,44 +36,50 @@ public class GameManager extends JPanel implements ActionListener {
 
         dinosaur = new Dinosaur(dinosaurStartX, dinosaurStartY); // Initial position
         obstacleManager = new ObstacleManager();
-        timer = new Timer(20, this);
-        timer.start();
+        timer = new Timer();
         scoreManager = new ScoreManager();
         powerUp = new PowerUp();
         random = new Random();
-        spacePressed = false;
+        scoreMultiplier = 1.0;
 
-        // Add KeyListener to listen for space bar press
+        // Add KeyListener to listen for space bar and arrow key presses
         setFocusable(true);
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                dinosaur.handleSpaceBarPress(e);
+                dinosaur.handleJumpKeyPress(e);
+                dinosaur.handleDownKeyPress(e);
             }
         });
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         dinosaur.paintComponent(g);
-        for (Obstacle obstacle : obstacleManager.getObstacles()) {
-            obstacle.draw(g);
-        }
+        obstacleManager.draw(g);
+        powerUp.draw(g);
         g.setColor(Color.BLACK);
         g.drawString("Score: " + scoreManager.getScore(), 10, 20);
+        g.drawString("Multiplier: " + scoreMultiplier, 10, 40);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         dinosaur.move();
         obstacleManager.update();
+        powerUp.update();
         generateObstacle();
-        if (collisionDetected()) {
-            timer.stop();
-            JOptionPane.showMessageDialog(null, "Game Over! Your Score: " + scoreManager.getScore());
+        generatePowerUp();
+        if (obstacleCollisionDetected()) {
+            stopGame();
         }
-        scoreManager.increaseScore();
+        handlePowerUpCollisions();
+        scoreManager.increaseScore((int) (10 * scoreMultiplier)); // Increase score with multiplier
         repaint();
     }
 
@@ -82,14 +94,23 @@ public class GameManager extends JPanel implements ActionListener {
             String type = random.nextInt(5) == 0 ? "bird" : "obstacle"; // 1 in 5 chance to create a bird
 
             if ("bird".equals(type)) {
-                topPosition = HEIGHT - 200 - random.nextInt(50); // Randomize bird's height in the air
+                topPosition = HEIGHT - 75 - random.nextInt(5); // Randomize bird's height in the air
+                obstacleManager.addObstacle(new Obstacle(randomX, topPosition, OBSTACLE_WIDTH, 30, BIRD_SPEED, type)); // Birds are always 30x30
+            } else {
+                obstacleManager.addObstacle(new Obstacle(randomX, topPosition, OBSTACLE_WIDTH, obstacleHeight, OBSTACLE_SPEED, type));
             }
-
-            obstacleManager.addObstacle(new Obstacle(randomX, topPosition, OBSTACLE_WIDTH, obstacleHeight, OBSTACLE_SPEED, type));
         }
     }
 
-    private boolean collisionDetected() {
+    private void generatePowerUp() {
+        if (random.nextDouble() < POWER_UP_RATIO) {
+            int x = WIDTH + random.nextInt(200);
+            int y = HEIGHT - 100 - random.nextInt(200); // Randomize power-up's height in the air
+            powerUp.addPowerUp(x, y);
+        }
+    }
+
+    private boolean obstacleCollisionDetected() {
         for (Obstacle obstacle : obstacleManager.getObstacles()) {
             if (dinosaur.isColliding(obstacle)) {
                 return true;
@@ -98,13 +119,29 @@ public class GameManager extends JPanel implements ActionListener {
         return false;
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("DinoDash");
-        GameManager gameManager = new GameManager();
-        frame.add(gameManager);
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    private void handlePowerUpCollisions() {
+        for (PowerUp.Circle circle : powerUp.getCircles()) {
+            if (dinosaur.isColliding(circle)) {
+                activatePowerUp();
+                powerUp.removePowerUp(circle);
+                break; // Remove only one power-up at a time
+            }
+        }
+    }
+
+    private void activatePowerUp() {
+        scoreMultiplier = 2.0; // Set multiplier to 2
+        TimerTask resetMultiplierTask = new TimerTask() {
+            @Override
+            public void run() {
+                scoreMultiplier = 1.0; // Reset multiplier after duration
+            }
+        };
+        timer.schedule(resetMultiplierTask, POWER_UP_DURATION * 1000); // Schedule reset after duration
+    }
+
+    private void stopGame() {
+        timer.cancel(); // Stop the game timer
+        JOptionPane.showMessageDialog(null, "Game Over! Your Score: " + scoreManager.getScore());
     }
 }

@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,5 +22,11 @@ public class ObstacleManager {
             obstacle.move();
         }
         obstacles.removeIf(obstacle -> obstacle.getX() < 0);
+    }
+
+    public void draw(Graphics g) {
+        for (Obstacle obstacle : obstacles) {
+            obstacle.draw(g);
+        }
     }
 }

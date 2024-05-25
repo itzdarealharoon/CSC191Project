@@ -5,8 +5,12 @@ public class ScoreManager {
         score = 0;
     }
 
-    public void increaseScore() {
-        score++;
+    public void increaseScore(int multiplier) {
+        if (multiplier > 1) {
+            score += multiplier;
+        } else {
+            score++;
+        }
     }
 
     public int getScore() {
