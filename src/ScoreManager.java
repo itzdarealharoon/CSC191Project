@@ -1,8 +1,5 @@
 /**
  * Lead Author(s): Haroon Usman; 5550080871
- * @author 
- * @author 
- * <<add additional lead authors here, with a full first and last name>>
  * 
  * Other contributors:
  * <<add additional contributors (mentors, tutors, friends) here, with contact information>>
@@ -11,12 +8,10 @@
  * Morelli, R., & Walde, R. (2016). Java, Java, Java: Object-Oriented Problem Solving.
  * Retrieved from https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
  * 
- * <<add more references here>>
- *  
  * Version/date: 05/25/2024
  * 
  * Responsibilities of class:
- * The ScoreManager class is responsible for managing the player's score in the game.
+ * Manages the player's score, handles score incrementation and retrieval.
  */
 public class ScoreManager 
 {

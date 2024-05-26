@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 
 /**
  * Lead Author(s): Haroon Usman; 5550080871
- * <<add additional lead authors here, with a full first and last name>>
  * 
  * Other contributors:
  * <<add additional contributors (mentors, tutors, friends) here, with contact information>>
@@ -18,13 +17,11 @@ import javax.swing.JPanel;
  * Morelli, R., & Walde, R. (2016). Java, Java, Java: Object-Oriented Problem Solving.
  * Retrieved from https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
  * 
- * <<add more references here>>
- *  
  * Version/date: 05/25/2024
  * 
  * Responsibilities of class:
- * - Represents the player's dinosaur character.
- * - Handles dinosaur movement and collision detection.
+ * Represents the player-controlled dinosaur in the game, handles movement and collisions.
+ * IS-A JPanel for rendering graphics.
  */
 public class Dinosaur extends JPanel 
 {

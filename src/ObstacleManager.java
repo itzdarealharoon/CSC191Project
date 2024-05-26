@@ -4,7 +4,6 @@ import java.util.List;
 
 /**
  * Lead Author(s): Haroon Usman; 5550080871
- * <<add additional lead authors here, with a full first and last name>>
  * 
  * Other contributors:
  * <<add additional contributors (mentors, tutors, friends) here, with contact information>>
@@ -13,12 +12,11 @@ import java.util.List;
  * Morelli, R., & Walde, R. (2016). Java, Java, Java: Object-Oriented Problem Solving.
  * Retrieved from https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
  * 
- * <<add more references here>>
- *  
  * Version/date: 05/25/2024
  * 
  * Responsibilities of class:
- * - Manages the obstacles in the game, including their creation, movement, and rendering.
+ * Manages the collection of obstacles in the game, handles their creation, movement, and removal.
+ * HAS-A relationship with Obstacle.
  */
 public class ObstacleManager 
 {

@@ -10,9 +10,6 @@ import javax.imageio.ImageIO;
 
 /**
  * Lead Author(s): Haroon Usman; 5550080871
- * @author 
- * @author 
- * <<add additional lead authors here, with a full first and last name>>
  * 
  * Other contributors:
  * <<add additional contributors (mentors, tutors, friends) here, with contact information>>
@@ -21,14 +18,14 @@ import javax.imageio.ImageIO;
  * Morelli, R., & Walde, R. (2016). Java, Java, Java: Object-Oriented Problem Solving.
  * Retrieved from https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
  * 
- * <<add more references here>>
- *  
  * Version/date: 05/25/2024
  * 
  * Responsibilities of class:
- * The PowerUp class manages the power-ups in the game, including their creation, movement, and drawing.
+ * Manages power-ups in the game, handles their creation, movement, and rendering.
+ * HAS-A relationship with Circle (inner class).
  */
-public class PowerUp {
+public class PowerUp 
+{
     private List<Circle> circles; // List of power-up circles
     private Image superJumpImage; // Image for the super jump power-up
     private Image scoreMultiplierImage; // Image for the score multiplier power-up

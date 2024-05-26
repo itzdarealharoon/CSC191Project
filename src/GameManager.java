@@ -10,7 +10,6 @@ import java.util.TimerTask;
 
 /**
  * Lead Author(s): Haroon Usman; 5550080871
- * <<add additional lead authors here, with a full first and last name>>
  * 
  * Other contributors:
  * <<add additional contributors (mentors, tutors, friends) here, with contact information>>
@@ -19,13 +18,12 @@ import java.util.TimerTask;
  * Morelli, R., & Walde, R. (2016). Java, Java, Java: Object-Oriented Problem Solving.
  * Retrieved from https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
  * 
- * <<add more references here>>
- *  
  * Version/date: 05/25/2024
  * 
  * Responsibilities of class:
- * - Manages game logic, including dinosaur movement, obstacle generation, power-ups, and score management.
- * - Handles the game loop and user interactions.
+ * Manages the overall game flow, including the game loop, player inputs, 
+ * obstacle generation, power-up generation, and collision detection.
+ * HAS-A relationships with Dinosaur, ObstacleManager, ScoreManager, PowerUp, and HighScoreManager.
  */
 public class GameManager extends JPanel implements ActionListener 
 {

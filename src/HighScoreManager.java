@@ -2,7 +2,6 @@ import java.io.*;
 
 /**
  * Lead Author(s): Haroon Usman; 5550080871
- * <<add additional lead authors here, with a full first and last name>>
  * 
  * Other contributors:
  * <<add additional contributors (mentors, tutors, friends) here, with contact information>>
@@ -11,12 +10,11 @@ import java.io.*;
  * Morelli, R., & Walde, R. (2016). Java, Java, Java: Object-Oriented Problem Solving.
  * Retrieved from https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
  * 
- * <<add more references here>>
- *  
  * Version/date: 05/25/2024
  * 
  * Responsibilities of class:
- * - Manages the high score functionality, including loading, saving, and checking high scores.
+ * Manages the high score, handles saving and loading high scores from a file.
+ * HAS-A relationship with file I/O operations.
  */
 public class HighScoreManager 
 {

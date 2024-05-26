@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 
 /**
  * Lead Author(s): Haroon Usman; 5550080871
- * <<add additional lead authors here, with a full first and last name>>
  * 
  * Other contributors:
  * <<add additional contributors (mentors, tutors, friends) here, with contact information>>
@@ -17,13 +16,10 @@ import javax.imageio.ImageIO;
  * Morelli, R., & Walde, R. (2016). Java, Java, Java: Object-Oriented Problem Solving.
  * Retrieved from https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
  * 
- * <<add more references here>>
- *  
  * Version/date: 05/25/2024
  * 
  * Responsibilities of class:
- * - Represents obstacles in the game, such as cacti and birds.
- * - Manages the movement and rendering of obstacles.
+ * Represents an obstacle in the game, handles its movement and rendering.
  */
 public class Obstacle 
 {
