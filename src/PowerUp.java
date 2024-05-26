@@ -1,76 +1,211 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import javax.imageio.ImageIO;
 
+/**
+ * Lead Author(s): Haroon Usman; 5550080871
+ * @author 
+ * @author 
+ * <<add additional lead authors here, with a full first and last name>>
+ * 
+ * Other contributors:
+ * <<add additional contributors (mentors, tutors, friends) here, with contact information>>
+ * 
+ * References:
+ * Morelli, R., & Walde, R. (2016). Java, Java, Java: Object-Oriented Problem Solving.
+ * Retrieved from https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
+ * 
+ * <<add more references here>>
+ *  
+ * Version/date: 05/25/2024
+ * 
+ * Responsibilities of class:
+ * The PowerUp class manages the power-ups in the game, including their creation, movement, and drawing.
+ */
 public class PowerUp {
-    private List<Circle> powerUps;
-    private Random random;
+    private List<Circle> circles; // List of power-up circles
+    private Image superJumpImage; // Image for the super jump power-up
+    private Image scoreMultiplierImage; // Image for the score multiplier power-up
 
-    public PowerUp() {
-        powerUps = new ArrayList<>();
-        random = new Random();
+    /**
+     * Constructor for the PowerUp class.
+     * Initializes the list of power-ups and loads the images.
+     */
+    public PowerUp() 
+    {
+        circles = new ArrayList<>();
+        try 
+        {
+            superJumpImage = ImageIO.read(new File("resources/pngtree-metal-spring-vector-icon-illustration-design-springy-mechanical-metal-vector-picture-image_10751903.png"));
+            scoreMultiplierImage = ImageIO.read(new File("resources/apps.15329.14288115356063326.4d62ce96-2646-47f3-9c63-744d41fe4daf.9c3ea08c-518d-4d7e-9b9b-c8d02fa61765.png"));
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+        }
     }
 
-    public void addPowerUp(int x, int y) {
-        powerUps.add(new Circle(x, y, 10)); // Example radius of 10
+    /**
+     * Adds a power-up at the specified coordinates with the given type.
+     * @param x The x-coordinate of the power-up
+     * @param y The y-coordinate of the power-up
+     * @param type The type of the power-up ("super_jump" or "score_multiplier")
+     */
+    public void addPowerUp(int x, int y, String type) 
+    {
+        circles.add(new Circle(x, y, type));
     }
 
-    public List<Circle> getCircles() {
-        return powerUps;
+    /**
+     * Removes a specified power-up from the list.
+     * @param circle The power-up to be removed
+     */
+    public void removePowerUp(Circle circle) 
+    {
+        circles.remove(circle);
     }
 
-    public void removePowerUp(Circle circle) {
-        powerUps.remove(circle);
+    /**
+     * Returns the list of power-ups.
+     * @return The list of power-ups
+     */
+    public List<Circle> getCircles()
+    {
+        return circles;
     }
 
-    public void update() {
-        for (Circle circle : powerUps) {
+    /**
+     * Updates the positions of all power-ups, moving them to the left.
+     * Removes any power-ups that have moved off-screen.
+     */
+    public void update() 
+    {
+        for (Circle circle : circles) 
+        {
             circle.move();
         }
-        powerUps.removeIf(circle -> circle.getX() < 0);
+        circles.removeIf(circle -> circle.getX() < 0);
     }
 
-    public void draw(Graphics g) {
-        for (Circle circle : powerUps) {
+    /**
+     * Draws all power-ups on the screen.
+     * @param g The Graphics object used to draw the power-ups
+     */
+    public void draw(Graphics g) 
+    {
+        for (Circle circle : circles) 
+        {
             circle.draw(g);
         }
     }
 
-    public class Circle {
+    /**
+     * Inner class representing a power-up circle.
+     */
+    public class Circle 
+    {
         private int x;
         private int y;
-        private int radius;
-        private int speed;
+        private int size;
+        private String type;
+        private static final int SPEED = 5; // Speed at which the power-ups move to the left
+        private static final int SPRING_SIZE = 60; // Size of the spring image
+        private static final int MULTIPLIER_SIZE = 60; // Size of the score multiplier image
 
-        public Circle(int x, int y, int radius) {
+        /**
+         * Constructor for the Circle class.
+         * @param x The x-coordinate of the power-up
+         * @param y The y-coordinate of the power-up
+         * @param type The type of the power-up ("super_jump" or "score_multiplier")
+         */
+        public Circle(int x, int y, String type)
+        {
             this.x = x;
             this.y = y;
-            this.radius = radius;
-            this.speed = 5;
+            this.size = 20;
+            this.type = type;
         }
 
-        public void move() {
-            x -= speed;
+        /**
+         * Moves the power-up to the left by the speed amount.
+         */
+        public void move() 
+        {
+            x -= SPEED;
         }
 
-        public void draw(Graphics g) {
-            g.setColor(Color.RED);
-            g.fillOval(x, y, radius * 2, radius * 2);
+        /**
+         * Draws the power-up on the screen.
+         * @param g The Graphics object used to draw the power-up
+         */
+        public void draw(Graphics g) 
+        {
+            if ("super_jump".equals(type) && superJumpImage != null) 
+            {
+                g.drawImage(superJumpImage, x, y, SPRING_SIZE, SPRING_SIZE, null);
+            } 
+            else if ("score_multiplier".equals(type) && scoreMultiplierImage != null) 
+            {
+                g.drawImage(scoreMultiplierImage, x, y, MULTIPLIER_SIZE, MULTIPLIER_SIZE, null);
+            } 
+            else if ("score_multiplier".equals(type)) 
+            {
+                g.setColor(Color.GREEN); // Fallback to green circle for score multiplier
+                g.fillOval(x, y, size, size);
+            }
         }
 
-        public int getX() {
+        /**
+         * Returns the bounding rectangle of the power-up, used for collision detection.
+         * @return The bounding rectangle of the power-up
+         */
+        public Rectangle getBounds() 
+        {
+            if ("super_jump".equals(type))
+            {
+                return new Rectangle(x, y, SPRING_SIZE, SPRING_SIZE); // Adjust hitbox for spring image
+            } 
+            else if ("score_multiplier".equals(type))
+            {
+                return new Rectangle(x, y, MULTIPLIER_SIZE, MULTIPLIER_SIZE); // Adjust hitbox for score multiplier image
+            } 
+            else
+            {
+                return new Rectangle(x, y, size, size);
+            }
+        }
+
+        /**
+         * Returns the x-coordinate of the power-up.
+         * @return The x-coordinate of the power-up
+         */
+        public int getX() 
+        {
             return x;
         }
 
-        public int getY() {
+        /**
+         * Returns the y-coordinate of the power-up.
+         * @return The y-coordinate of the power-up
+         */
+        public int getY() 
+        {
             return y;
         }
 
-        public Rectangle getBounds() {
-            return new Rectangle(x, y, radius * 2, radius * 2);
+        /**
+         * Returns the type of the power-up.
+         * @return The type of the power-up
+         */
+        public String getType() 
+        {
+            return type;
         }
     }
 }
